@@ -1,14 +1,14 @@
 import pytest
-from main import registrar_asistencia, obtener_reporte_estadistico, historial_registros, total_asistencias
+import main
+from main import (
+    registrar_asistencia,
+    obtener_reporte_estadistico,
+    historial_registros,
+)
 
 @pytest.fixture(autouse=True)
 def limpiar_estado():
-    """
-    Fixture que limpia y restablece las variables globales de estado 
-    antes de cada ejecución de prueba para asegurar el aislamiento.
-    """
-    global total_asistencias, historial_registros
-    total_asistencias = 0
+    main.total_asistencias = 0
     historial_registros.clear()
     yield
 
@@ -17,11 +17,11 @@ def test_registrar_asistencia_exitoso():
     Verifica que una asistencia con un DNI válido y materia predeterminada 
     se registre correctamente y devuelva True.
     """
-    alumno = {"dni": "40123456", "materia": "Programación III"}
+    alumno = {"dni": "40123456"}
     resultado = registrar_asistencia(alumno)
     
     assert resultado is True
-    assert total_asistencias == 1
+    assert main.total_asistencias == 1
     assert len(historial_registros) == 1
     assert historial_registros[0]["dni"] == "40123456"
     assert historial_registros[0]["materia"] == "Programación III"
@@ -44,7 +44,7 @@ def test_registrar_asistencia_dni_invalido_corto():
     resultado = registrar_asistencia(alumno)
     
     assert resultado is False
-    assert total_asistencias == 0
+    assert main.total_asistencias == 0
     assert len(historial_registros) == 0
 
 def test_registrar_asistencia_dni_con_letras():
@@ -55,7 +55,7 @@ def test_registrar_asistencia_dni_con_letras():
     resultado = registrar_asistencia(alumno)
     
     assert resultado is False
-    assert total_asistencias == 0
+    assert main.total_asistencias == 0
 
 def test_registrar_asistencia_sin_dni():
     """
@@ -65,7 +65,7 @@ def test_registrar_asistencia_sin_dni():
     resultado = registrar_asistencia(alumno)
     
     assert resultado is False
-    assert total_asistencias == 0
+    assert main.total_asistencias == 0
 
 def test_obtener_reporte_estadistico():
     """

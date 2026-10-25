@@ -1,3 +1,4 @@
+name: Python CI Pipeline
 # 1. Definimos los eventos que disparan el pipeline
 on:
   push:
@@ -31,6 +32,3 @@ jobs:
       - name: Ejecutar tests con pytest
         run: |
           pytest -v
-```
-
----
