@@ -31,4 +31,4 @@ jobs:
       # Paso 4: Ejecutar las pruebas unitarias con pytest en modo verbose
       - name: Ejecutar tests con pytest
         run: |
-          pytest -v
+          python -m pytest -v
